@@ -12,7 +12,7 @@ Using pipenv, virtualenv preferably.
 
 Using Django, Django Rest Framework preferably.
 
-![alt text]()
+![alt text](https://1.bp.blogspot.com/-Buv4_R37zXU/X52GkTyp2sI/AAAAAAABRIc/xMjPZef7ETIeW9cw4-7MejW6DGfV_ZkDwCLcBGAsYHQ/w640-h413/October2020-Templates_2.gif)
 
 ## DataBase
 
@@ -36,7 +36,7 @@ $ python manage.py runserver
 
 Follow the following steps and you're good to go! Important:
 
-![alt text]()
+![alt text](https://i.ytimg.com/vi/HWg3zXWwre8/maxresdefault.jpg)
 
 ## Coding
 
