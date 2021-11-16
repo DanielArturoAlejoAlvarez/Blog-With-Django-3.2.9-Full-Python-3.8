@@ -1,0 +1,17 @@
+{% extends 'base.html' %} {% block content %}
+
+<div class="row">
+  <div class="col-12 my-4">
+    <div class="row">
+      {% for obj in object_list %}
+      <div class="col-4">
+        <div class="card card-body">
+          <h2>{{obj.title}}</h2>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+</div>
+
+{% endblock content %}
