@@ -19,9 +19,14 @@ from django.conf.urls.static import static
 from django.contrib import admin
 from django.urls import path,include
 
+from posts.views import (
+    PostListView
+)
+
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('accounts/', include('allauth.urls')),
+    path('', PostListView.as_view(), name='list'),
 ]
 
 
