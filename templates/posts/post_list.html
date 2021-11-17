@@ -1,17 +1,26 @@
 {% extends 'base.html' %} {% block content %}
 
-<div class="row">
-  <div class="col-12 my-4">
-    <div class="row">
+
+    <div class="row my-4">
       {% for obj in object_list %}
-      <div class="col-4">
-        <div class="card card-body">
-          <h2>{{obj.title}}</h2>
+      <div class="col-12 col-md-4">
+        
+        <div class="card shadow">
+          <div class="card-header"><h2>{{obj.title | upper}}</h2></div>
+          <div class="card-body">            
+            <a href="{{obj.get_absolute_url}}">
+              <img src="{{obj.thumbnail.url}}" alt="{{obj.title}}" class="card-img-top">
+            </a>
+            <p>{{obj.content | truncatechars:50}}</p>
+          </div>
+          <div class="card-footer">
+            
+          </div>
         </div>
+        
       </div>
       {% endfor %}
     </div>
-  </div>
-</div>
+  
 
 {% endblock content %}

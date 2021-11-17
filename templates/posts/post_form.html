@@ -6,7 +6,7 @@
       <div class="col-8 offset-md-2">
         <div class="card card-body">        
           <h2 class="card-title">Form {{view_type}}</h2>
-          <form action="POST">
+          <form action="POST" enctype="multipart/form-data">
               {% csrf_token %}
               {{form.as_p}}
               <button type="submit" class="btn btn-primary">{{view_type | title}}</button>

@@ -1,15 +1,15 @@
 {% extends 'base.html' %} {% block content %}
 
-<div class="row">
-  <div class="col-12 my-4">
-    <div class="row">
-      <div class="col-8 offset-md-2">
-        <div class="card card-body">
-          <h1 class="text-center">{{object.title}}</h1>
-        </div>
-      </div>     
+
+  <div class="row my-4">
+    <div class="col-8 offset-md-2">      
+      <div class="card card-body">
+        <h2 class="text-center">{{object.title}}</h2>
+        <img src="{{object.thumbnail.url}}" alt="{{object.title}}" class="card-img-top">
+        <p>{{object.content}}</p>          
+      </div>
     </div>
   </div>
-</div>
+ 
 
 {% endblock content %}
