@@ -9,3 +9,14 @@ class PostListView(ListView):
 
 class PostDetailView(DetailView):
     model=Post
+
+class PostUpdateView(UpdateView):
+    model=Post 
+
+    fields=(
+        'title',
+        'content',
+        'thumbnail',
+        'author',
+        'slug'
+    )
