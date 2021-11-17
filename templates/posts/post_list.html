@@ -14,7 +14,12 @@
             <p>{{obj.content | truncatechars:50}}</p>
           </div>
           <div class="card-footer">
-            
+            <p class="float-end">
+              <span><i class="fas fa-eye"></i> {{obj.get_view_count}}</span>
+              <span><i class="fas fa-thumbs-up"></i> {{obj.get_like_count}}</span>
+              <span><i class="fas fa-comment"></i> {{obj.get_comment_count}}</span>
+            </p>
+            <p class="card-text text-muted"><small>{{obj.publish_date | timesince}} ago</small></p>
           </div>
         </div>
         
