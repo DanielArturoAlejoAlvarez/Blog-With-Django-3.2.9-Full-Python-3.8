@@ -20,6 +20,7 @@ from django.contrib import admin
 from django.urls import path,include
 
 from posts.views import (
+    PostDeleteView,
     PostDetailView,
     PostListView,
     PostUpdateView
@@ -31,6 +32,7 @@ urlpatterns = [
     path('', PostListView.as_view(), name='list'),
     path('<slug>/', PostDetailView.as_view(), name='detail'),
     path('<slug>/update/', PostUpdateView.as_view(), name='update'),
+    path('<slug>/delete/', PostDeleteView.as_view(), name='delete'),    
 ]
 
 

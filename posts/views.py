@@ -20,3 +20,7 @@ class PostUpdateView(UpdateView):
         'author',
         'slug'
     )
+
+class PostDeleteView(DeleteView):
+    model=Post
+    success_url='/'
