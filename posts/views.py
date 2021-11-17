@@ -10,6 +10,17 @@ class PostListView(ListView):
 class PostDetailView(DetailView):
     model=Post
 
+class PostCreateView(CreateView):
+    model=Post 
+
+    fields=(
+        'title',
+        'content',
+        'thumbnail',
+        'author',
+        'slug'
+    )
+
 class PostUpdateView(UpdateView):
     model=Post 
 
