@@ -20,6 +20,7 @@ class PostCreateView(CreateView):
             'view_type': 'create'
         }) 
         return context
+        
     
 
     # fields=(
