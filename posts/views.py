@@ -10,6 +10,11 @@ class PostListView(ListView):
 class PostDetailView(DetailView):
     model=Post
 
+    def get_object(self, **kwargs):
+        obj = super().get_object(**kwargs)
+        PostView.objects.get_or_create(user=self.request.user, post=obj)
+        return obj
+
 class PostCreateView(CreateView):
     form_class=PostForm
     model=Post 
@@ -48,11 +53,12 @@ class PostDeleteView(DeleteView):
     success_url='/'
 
 
-def like(request, slug):
-    post = get_object_or_404(Post, slug=slug)
-    like_qs = Like.objects.filter(user=request.user, post=post)
-    if like_qs.exists():
-        like_qs[0].delete()
+def like(request,slug):
+    post=get_object_or_404(Post, slug=slug)
+    like_query_set=Like.objects.filter(user=request.user, post=post)
+    if like_query_set.exists():
+        like_query_set[0].delete()
         return redirect('detail', slug=slug)
+
     Like.objects.create(user=request.user, post=post)
     return redirect('detail', slug=slug)
