@@ -2,13 +2,23 @@ from django.shortcuts import render, get_object_or_404, redirect
 
 from .models import Post,Comment,PostView,Like
 from django.views.generic import ListView,DetailView,CreateView,UpdateView,DeleteView
-from .forms import PostForm
+from .forms import CommentForm, PostForm
 
 class PostListView(ListView):
     model=Post
 
 class PostDetailView(DetailView):
     model=Post
+
+    def post(self, *args, **kwargs):
+        form = CommentForm(self.request.POST)
+        if form.is_valid():
+            post = self.get_object()
+            comment = form.instance
+            comment.user = self.request.user
+            comment.post = post
+            comment.save()
+            return redirect('detail', slug=post.slug)
 
     def get_object(self, **kwargs):
         obj = super().get_object(**kwargs)
