@@ -1,40 +1,67 @@
 {% extends 'base.html' %} {% block content %}
 
+<div class="row my-4">
+  <div class="col-12 col-md-8 offset-md-2">
+    <div class="card shadow">
+      <div class="card-header"><h2>{{object.title | upper}}</h2></div>
+      <div class="card-body">
+        <img
+          src="{{object.thumbnail.url}}"
+          alt="{{object.title}}"
+          class="card-img-top"
+        />
 
-  <div class="row my-4">
-      <div class="col-12 col-md-8 offset-md-2">
-        
-        <div class="card shadow">
-          <div class="card-header"><h2>{{object.title | upper}}</h2></div>
-          <div class="card-body">            
-            <img src="{{object.thumbnail.url}}" alt="{{object.title}}" class="card-img-top">
-            
-            <p>{{object.content}}</p>
-          </div>
-          <div class="card-footer">
-            <p class="float-end">
-              <span><i class="fas fa-eye"></i> {{object.get_view_count}}</span>
-              <span><i class="fas fa-thumbs-up"></i> {{object.get_like_count}}</span>
-              <span><i class="fas fa-comment"></i> {{object.get_comment_count}}</span>
-            </p>
-            <p class="card-text text-muted"><small>{{object.publish_date | timesince}} ago</small></p>
-          
-            <hr>
-            <div style="padding: 10px;">
-              <h4>Enjoy this post? Give it a like</h4>
-              <a href="{{object.get_like_url}}" class="text-muted">
-                <i class="fas fa-thumbs-up fa-lg"></i> {{object.get_like_count}}                
-              </a>
-            </div>
-          
-          </div>
-
-          
-        </div>
-        
+        <p>{{object.content}}</p>
       </div>
-     
+      <div class="card-footer">
+        <p class="float-end">
+          <span><i class="fas fa-eye"></i> {{object.get_view_count}}</span>
+          <span
+            ><i class="fas fa-thumbs-up"></i> {{object.get_like_count}}</span
+          >
+          <span
+            ><i class="fas fa-comment"></i> {{object.get_comment_count}}</span
+          >
+        </p>
+        <p class="card-text text-muted">
+          <small>{{object.publish_date | timesince}} ago</small>
+        </p>
+
+        <hr />
+        <div style="padding: 10px">
+          <h4>Enjoy this post? Give it a like</h4>
+          <a href="{{object.get_like_url}}" class="text-muted">
+            <i class="fas fa-thumbs-up fa-lg"></i> {{object.get_like_count}}
+          </a>
+          <hr />
+
+          {% if request.user.is_authenticated %}
+          <h4>Leave a comment below</h4>
+          <form method="post">
+            {% csrf_token %} {{form.as_p}}
+
+            <button type="submit" class="btn btn-primary">Comment</button>
+          </form>
+          <hr />
+          {% for obj in object.comments %}
+          <div>
+            <p>
+              {{comment.content}}
+              <br />
+              <small>{{comment.timestamp | timesince }}</small>
+            </p>
+          </div>
+          <hr />
+          {% endfor %} {% else %}
+          <a href="{% url 'account_login' %}" class="btn btn-primary"
+            >Login to comment</a
+          >
+
+          {% endif %}
+        </div>
+      </div>
     </div>
- 
+  </div>
+</div>
 
 {% endblock content %}
