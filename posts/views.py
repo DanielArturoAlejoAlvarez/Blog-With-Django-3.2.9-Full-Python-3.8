@@ -20,6 +20,14 @@ class PostDetailView(DetailView):
             comment.save()
             return redirect('detail', slug=post.slug)
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context.update({
+            'form': CommentForm
+        })
+        return context
+    
+
     def get_object(self, **kwargs):
         obj = super().get_object(**kwargs)
         #if self.request.user.is_authenticated:
