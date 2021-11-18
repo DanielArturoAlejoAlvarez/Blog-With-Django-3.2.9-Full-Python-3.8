@@ -12,6 +12,7 @@ class PostDetailView(DetailView):
 
     def get_object(self, **kwargs):
         obj = super().get_object(**kwargs)
+        #if self.request.user.is_authenticated:
         PostView.objects.get_or_create(user=self.request.user, post=obj)
         return obj
 
