@@ -180,6 +180,17 @@ class PostCreateView(CreateView):
             'view_type': 'create'
         }) 
         return context
+
+
+def like(request,slug):
+    post=get_object_or_404(Post, slug=slug)
+    like_query_set=Like.objects.filter(user=request.user, post=post)
+    if like_query_set.exists():
+        like_query_set[0].delete()
+        return redirect('detail', slug=slug)
+
+    Like.objects.create(user=request.user, post=post)
+    return redirect('detail', slug=slug)
         
 ```
 
