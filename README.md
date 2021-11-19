@@ -46,29 +46,158 @@ Follow the following steps and you're good to go! Important:
 DATABASE_URI='mysql+pymysql://{}:{}@{}/{}'.format(DB_USER,DB_PASSWORD,DB_HOST,DB_NAME)
 ```
 
-### Authentication
+### Routes
 
 ```python
-```
+from posts.views import (
+    PostCreateView,
+    PostDeleteView,
+    PostDetailView,
+    PostListView,
+    PostUpdateView,
+    like
+)
 
-### Middlewares
-
-```python
+urlpatterns = [
+    path('admin/', admin.site.urls),
+    path('accounts/', include('allauth.urls')),
+    path('', PostListView.as_view(), name='list'),
+    path('create/', PostCreateView.as_view(), name='create'),
+    path('<slug>/', PostDetailView.as_view(), name='detail'),
+    path('<slug>/update/', PostUpdateView.as_view(), name='update'),
+    path('<slug>/delete/', PostDeleteView.as_view(), name='delete'),
+    path('like/<slug>/', like, name='like'),
+]
 ```
 
 ### Models
 
 ```python
+class User(AbstractUser):
+    avatar=models.ImageField(upload_to='users/', height_field=None, width_field=None, max_length=512)
+
+    def __str__(self):
+        return self.username
+
+class Post(models.Model):
+    title=models.CharField(max_length=100)
+    content=models.TextField()
+    thumbnail=models.ImageField(upload_to='posts/', height_field=None, width_field=None, max_length=512)
+    publish_date=models.DateTimeField(auto_now_add=True)
+    last_updated=models.DateTimeField(auto_now=True)
+    author=models.ForeignKey(User, on_delete=models.CASCADE)
+    slug=models.SlugField()
+
+    def get_absolute_url(self):
+        return reverse("detail", kwargs={"slug": self.slug})
+
+    def get_like_url(self):
+        return reverse("like", kwargs={"slug": self.slug})
+
+    @property
+    def comments(self):
+        return self.comment_set.all()
+
+    @property
+    def get_comment_count(self):
+        return self.comment_set.all().count()
+
+    @property
+    def get_like_count(self):
+        return self.like_set.all().count()
+
+    @property
+    def get_view_count(self):
+        return self.postview_set.all().count()
+
+    def __str__(self):
+        return self.title
+
+
+class Comment(models.Model):
+    user=models.ForeignKey(User, on_delete=models.CASCADE)
+    post=models.ForeignKey(Post, on_delete=models.CASCADE)
+    content=models.TextField()
+    timestamp=models.DateTimeField(auto_now_add=True)   
+
+    def __str__(self):
+        return self.user.username
+
+class PostView(models.Model):
+    user=models.ForeignKey(User, on_delete=models.CASCADE)
+    post=models.ForeignKey(Post, on_delete=models.CASCADE)
+    timestamp=models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return self.user.username
+
+class Like(models.Model):
+    user=models.ForeignKey(User, on_delete=models.CASCADE)
+    post=models.ForeignKey(Post, on_delete=models.CASCADE)
+    
+    def __str__(self):
+        return self.user.username
 ```
 
 ### Views
 
 ```python
+class PostDetailView(DetailView):
+    model=Post
+
+    def post(self, *args, **kwargs):
+        form = CommentForm(self.request.POST)
+        if form.is_valid():
+            post = self.get_object()
+            comment = form.instance
+            comment.user = self.request.user
+            comment.post = post
+            comment.save()
+            return redirect('detail', slug=post.slug)
+        return redirect('detail', slug=self.get_object().slug)
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context.update({
+            'form': CommentForm
+        })
+        return context
+    
+
+    def get_object(self, **kwargs):
+        obj = super().get_object(**kwargs)
+        #if self.request.user.is_authenticated:
+        PostView.objects.get_or_create(user=self.request.user, post=obj)
+        return obj
+
+class PostCreateView(CreateView):
+    form_class=PostForm
+    model=Post 
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context.update({
+            'view_type': 'create'
+        }) 
+        return context
+        
 ```
 
-### Controllers
+### Forms
 
 ```python
+class PostForm(forms.ModelForm):
+    class Meta:
+        model=Post
+        fields=('__all__')
+
+class CommentForm(forms.ModelForm):
+    content=forms.CharField(required=True, widget=Textarea(attrs={
+        'rows': 4
+    }))
+    class Meta:
+        model=Comment
+        fields=('content',)
 ```
 
 ## Contributing

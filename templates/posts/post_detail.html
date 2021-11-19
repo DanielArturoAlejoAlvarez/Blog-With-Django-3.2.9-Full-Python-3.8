@@ -44,7 +44,13 @@
             
             {{form|crispy}}
 
-            <button type="submit" class="btn btn-primary">Comment</button>
+            <div class="row">
+              <div class="col-4">
+                <div class="mb-3 d-grid gap-2 my-2">
+                  <button type="submit" class="btn btn-primary btn-lg">Comment</button>
+                </div>
+              </div>
+            </div>
           </form>
           <hr />
           {% for obj in object.comments %}
@@ -57,9 +63,10 @@
           </div>
           <hr />
           {% endfor %} {% else %}
-          <a href="{% url 'account_login' %}" class="btn btn-primary"
-            >Login to comment</a
-          >
+          
+          <div class="mb-3">
+            <a href="{% url 'account_login' %}" class="btn btn-primary">Login to comment</a>
+          </div>
 
           {% endif %}
         </div>
