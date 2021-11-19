@@ -1,4 +1,6 @@
-{% extends 'base.html' %} {% block content %}
+{% extends 'base.html' %} 
+{% load crispy_forms_tags %}
+{% block content %}
 
 <div class="row my-4">
   <div class="col-12 col-md-8 offset-md-2">
@@ -38,7 +40,9 @@
           {% if request.user.is_authenticated %}
           <h4>Leave a comment below</h4>
           <form method="post">
-            {% csrf_token %} {{form.as_p}}
+            {% csrf_token %} 
+            
+            {{form|crispy}}
 
             <button type="submit" class="btn btn-primary">Comment</button>
           </form>
