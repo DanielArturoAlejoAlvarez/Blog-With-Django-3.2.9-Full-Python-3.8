@@ -45,11 +45,14 @@
                 ACCOUNT
               </a>
               <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                <li><a class="dropdown-item" href="#">Profile</a></li>
-                <li><a class="dropdown-item" href="#">Logout</a></li>
-                <li><hr class="dropdown-divider" /></li>
-                <li><a class="dropdown-item" href="#">Login</a></li>
-                <li><a class="dropdown-item" href="#">Register</a></li>
+                {% if request.user.is_authenticated %}
+                <li><a class="dropdown-item" href="/accounts/logout/">Logout</a></li>
+                
+                {% else %}
+                <li><a class="dropdown-item" href="/accounts/login/">Login</a></li>
+                <li><a class="dropdown-item" href="/accounts/signup/">Register</a></li>
+                {% endif %}
+
               </ul>
             </li>
           </ul>

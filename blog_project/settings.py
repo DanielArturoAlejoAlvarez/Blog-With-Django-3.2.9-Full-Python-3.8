@@ -150,6 +150,8 @@ AUTHENTICATION_BACKENDS = [
     'allauth.account.auth_backends.AuthenticationBackend',
 ]
 
+LOGIN_REDIRECT_URL = '/'
+
 SITE_ID = 1
 
 AUTH_USER_MODEL = 'posts.User'

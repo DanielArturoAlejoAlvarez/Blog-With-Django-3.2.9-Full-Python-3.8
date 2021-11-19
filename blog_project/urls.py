@@ -25,7 +25,7 @@ from posts.views import (
     PostDetailView,
     PostListView,
     PostUpdateView,
-    like
+    like,
 )
 
 urlpatterns = [

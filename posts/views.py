@@ -31,9 +31,9 @@ class PostDetailView(DetailView):
 
     def get_object(self, **kwargs):
         obj = super().get_object(**kwargs)
-        #if self.request.user.is_authenticated:
-        PostView.objects.get_or_create(user=self.request.user, post=obj)
-        return obj
+        if self.request.user.is_authenticated:
+            PostView.objects.get_or_create(user=self.request.user, post=obj)
+            return obj
 
 class PostCreateView(CreateView):
     form_class=PostForm
@@ -89,3 +89,10 @@ def like(request,slug):
 
     Like.objects.create(user=request.user, post=post)
     return redirect('detail', slug=slug)
+
+
+def home(request):
+    return redirect('home')
+
+
+
