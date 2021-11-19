@@ -19,6 +19,7 @@ class PostDetailView(DetailView):
             comment.post = post
             comment.save()
             return redirect('detail', slug=post.slug)
+        return redirect('detail', slug=self.get_object().slug)
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -58,6 +59,13 @@ class PostCreateView(CreateView):
 class PostUpdateView(UpdateView):
     form_class=PostForm
     model=Post 
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context.update({
+            'view_type': 'update'
+        }) 
+        return context
 
     # fields=(
     #     'title',

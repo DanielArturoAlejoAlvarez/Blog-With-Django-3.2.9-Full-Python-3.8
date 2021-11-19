@@ -1,4 +1,6 @@
-{% extends 'base.html' %} {% block content %}
+{% extends 'base.html' %} 
+{% load crispy_forms_tags %}
+{% block content %}
 
 <div class="row">
   <div class="col-12 my-4">
@@ -8,8 +10,12 @@
           <h2 class="card-title">Form {{view_type}}</h2>
           <form action="POST" enctype="multipart/form-data">
               {% csrf_token %}
-              {{form.as_p}}
-              <button type="submit" class="btn btn-primary">{{view_type | title}}</button>
+              {{form|crispy}}
+
+              <div class="mb-3 my-4 d-grid gap-2">
+                <button type="submit" class="btn btn-primary btn-lg">{{view_type|title}}</button>
+              </div>
+              
           </form>
         </div>
       </div>     
